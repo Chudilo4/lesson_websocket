@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div id='messages_container' style='border: 2px solid black'>
+	</div>
+	<div>
+		<input type='text' name='message_input' value=''>
+		<input type='button' name='send_message_button' value='отправить сообщение'>
+	</div>
+{% endblock %}
+{% block script %}
+    <script>
+    websocket = new WebSocket("ws://localhost:8001/");
+websocket.onopen = (event) => websocket.send("{{ token }}");
+websocket.onmessage = (event) => console.log(event.data);
+    </script>
+{% endblock %}

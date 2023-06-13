@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <input id='title' class="form-control" type="text" placeholder="Название">
+                </div>
+                <div class="input-group mb-3">
+                    <textarea id='description'class="form-control" id="description" rows="3"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <select multiple class="form-control" id="performers">
+                        {% for u in performers %}
+                          <option value="{{ u.pk }}">{{ u }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <input id='deadline' type="datetime-local" class="form-control" placeholder="Дедлайн">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="submit" value="создать" class="btn btn-primary" onclick='addcard()'>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+{% endblock %}
+{% block script %}
+    <script>
+    function addcard () {
+      let title = document.getElementById('title').value;
+      let description = document.getElementById('description').value;
+      var arr = document.getElementById('performers').selectedOptions;
+      var values = Array.from(arr).map(({ value }) => value);
+      let deadline = document.getElementById('deadline').value;
+      var data = {
+          'title': title,
+          'description': description,
+          'performers': values,
+          'deadline': deadline
+      }
+      console.log(data)
+      $.ajax({
+          method: 'POST',
+          url: "{% url 'create_task' %}",
+          data: JSON.stringify(data),
+          headers: {
+              'X-CSRFToken': "{{ csrf_token }}",
+              'Content-Type': 'application/json',
+          },
+          success: function (response) {
+          }
+      })
+    }
+</script>
+{% endblock %}

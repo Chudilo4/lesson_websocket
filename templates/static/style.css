@@ -1,0 +1,8 @@
+.nav{
+    background: black;
+    color: aliceblue;
+    font-size: 18px;
+}
+.list-nav {
+    list-style-type: none;
+}

@@ -1,0 +1,51 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    {% bootstrap_css %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+    <main class="container text-center">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <input id='username' class="form-control" type="text" placeholder="Логин">
+                </div>
+                <div class="input-group mb-3">
+                    <input id='password' type="password" class="form-control" placeholder="Пароль">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="submit" value="Войти" class="btn btn-primary" onclick="login()">
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </main>
+</body>
+<script>
+    function login () {
+      let username = document.getElementById('username').value;
+      let password = document.getElementById('password').value;
+        data = {
+            'username': username,
+            'password': password,
+        }
+      $.ajax({
+                method: 'POST',
+                url: "{% url 'avb' %}",
+                data: JSON.stringify(data),
+                headers: {
+                    'X-CSRFToken': "{{ csrf_token }}",
+                    'Content-Type': 'application/json',
+                },
+                success: function (response) {
+                    window.location.replace('{% url 'home' %}');
+                }
+      })
+    }
+</script>
+</html>
